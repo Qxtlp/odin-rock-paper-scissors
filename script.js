@@ -19,20 +19,49 @@ function playRound(playerSelection,computerPlay){
     let p1 = playerSelection;
     
     if (p1==0&&cp==0||p1==1&&cp==1||p1==2&&cp==2) {
-        return "draw";
+        return 0;
     }else if (p1==0&&cp==1||p1==1&&cp==2||p1==2&&cp==0) {
-        return "lose";
+        return 2;
     }else{
-        return "win";
+        return 1;
     }
     
 }
 
-const player = playerSelection();
-const computer = computerPlay();
+function game(){
+    let pPoints=0;
+    let cPoints=0;
+    for (let i = 0; i < 5; i++) {
+        let player = playerSelection();
+        let computer = computerPlay();
+        let result = playRound(player,computer);
+        console.log(
+            "you chose: "+choice[player],
+            "\ncomputer chose: "+choice[computer],
+        )
+        switch (result) {
+            case 0:
+                console.log("Result: Draw");
+                break;
+            case 1:
+                console.log("Result: Player won the round");
+                pPoints++;
+                break;
+            case 2:
+                console.log("Result: Computer won the round");
+                cPoints++;
+                break;
+        }
+    }
+    if (pPoints==cPoints) {
+        return "Draw"
+    }else if (pPoints>cPoints) {
+        return "Player won the game"
+    }else{
+        return "Computer won the game"
+    }
+}
 
-console.log(
-    "you chose: "+choice[player],
-    "\ncomputer chose: "+choice[computer],
-    "\nresult: "+playRound(player,computer)
-)
+console.log(game());
+
+
