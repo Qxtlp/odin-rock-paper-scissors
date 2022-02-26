@@ -1,6 +1,20 @@
 
+const buttons = document.querySelectorAll("button");
+const choiceStatus = document.querySelector("#choice");
+const roundStatus = document.querySelector("#status");
+const gameResult = document.querySelector("#result");
+
+buttons.forEach((button) => {
+
+    button.addEventListener("click", () => {
+        game(playerSelection(button.id));
+    });
+});
+
 
 const choice = ["Rock", "Paper", "Scissors"];
+let pPoints = 0;
+let cPoints = 0;
 
 function computerPlay() {
     let random = Math.floor(Math.random() * 3);
@@ -19,30 +33,44 @@ function playerSelection(input) {
 function playRound(playerSelection, computerPlay) {
     let cp = computerPlay;
     let p1 = playerSelection;
-    console.log(
-        "you chose: " + choice[p1],
-        "\ncomputer chose: " + choice[cp],
-    )
+    choiceStatus.textContent =
+        "you chose: " + choice[p1] +
+        "\ncomputer chose: " + choice[cp];
 
     if (p1 == 0 && cp == 0 || p1 == 1 && cp == 1 || p1 == 2 && cp == 2) {
-        return console.log("draw");;
+        return 0;
     } else if (p1 == 0 && cp == 1 || p1 == 1 && cp == 2 || p1 == 2 && cp == 0) {
-        return console.log("lose");;
+        return 2;
     } else {
-        return console.log("win");;
+        return 1;
     }
 
 }
+function game(playerSelection) {
 
-const buttons = document.querySelectorAll('button');
+    let result = playRound(playerSelection, computerPlay());
+    switch (result) {
+        case 0:
+            roundStatus.textContent = "Result: Draw";
+            break;
+        case 1:
+            roundStatus.textContent ="Result: Player won the round";
+            pPoints++;
+            break;
+        case 2:
+            roundStatus.textContent ="Result: Computer won the round";
+            cPoints++;
+            break;
+    }
+    gameResult.textContent = 
+    "player point : "+pPoints+
+    " Computer point : "+cPoints;
+    if (pPoints == 5) {
+        return alert("player won the game");
+    } else if (cPoints == 5) {
+        return alert("computer won the game");
+    }
 
-// we use the .forEach method to iterate through each button
-buttons.forEach((button) => {
-
-    // and for each one we add a 'click' listener
-    button.addEventListener('click', () => {
-        playRound(playerSelection(button.id), computerPlay());
-    });
-});
+}
 
 
